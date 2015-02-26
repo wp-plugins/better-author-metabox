@@ -5,7 +5,7 @@ Plugin URI: http://www.shooflydesign.org/
 Description: Allows the Author metabox to be overridden with one that includes different users.
 Author: Joe Chellman
 Author URI: http://www.shooflydesign.org/
-Version: 1.0
+Version: 1.0.1
 Text Domain: better-author-metabox
 
 	Plugin: Copyright (c) 2014-2015 Joe Chellman
@@ -82,7 +82,7 @@ class BetterAuthorMetabox {
         $options = get_option( 'BAM_config' );
 
         // no options (yet) - forget it!
-        if (!$options) return;
+        if (!$options || !$options['enabled_post_types']) return;
 
         foreach ($options['enabled_post_types'] as $post_type => $val) {
             if ($val == 1) {
@@ -149,8 +149,7 @@ class BetterAuthorMetabox {
                 if ($enabled == 1) {
                     $query_args['role'] = $role;
                     $role_users = get_users($query_args);
-
-                    $users = array_merge($role_users);
+                    $users = array_merge($role_users, $users);
                 }
             }
         // if no roles have been selected, use the default of authors
@@ -251,17 +250,21 @@ class BetterAuthorMetabox {
 	public function sanitize_options($input) {
         $safe_input = array();
 
-        foreach ($input['enabled_post_types'] as $post_type => $enabled) {
-            // post type settings - only allowed value is 1
-            if ($enabled == 1) {
-                $safe_input['enabled_post_types'][$post_type] = 1;
+        if ($input['enabled_post_types']) {
+            foreach ($input['enabled_post_types'] as $post_type => $enabled) {
+                // post type settings - only allowed value is 1
+                if ($enabled == 1) {
+                    $safe_input['enabled_post_types'][$post_type] = 1;
+                }
             }
         }
 
-        foreach ($input['enabled_roles'] as $role => $enabled) {
-            // user role setting - only allowed value is 1
-            if ($enabled == 1) {
-                $safe_input['enabled_roles'][$role] = 1;
+        if ($input['enabled_roles']) {
+            foreach ($input['enabled_roles'] as $role => $enabled) {
+                // user role setting - only allowed value is 1
+                if ($enabled == 1) {
+                    $safe_input['enabled_roles'][$role] = 1;
+                }
             }
         }
 

@@ -2,8 +2,8 @@
 Contributors: shooflydesign
 Tags: admin, users
 Requires at least: 3.5
-Tested up to: 4.1
-Stable tag: 4.3
+Tested up to: 4.1.1
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,3 +47,6 @@ This plugin doesn't support that directly, but there is a filter (`bam_wp_dropdo
 
 = 1.0 =
 * Initial version.
+
+= 1.0.1 =
+* Fixed issue with multiple roles not being correctly merged (hat tip: WPSeeker), and a couple small issues with settings.
